@@ -1,4 +1,4 @@
-Usage can be viewed in src/index.spec.ts
+Usage can be viewed in src/providers/filereader.spec.ts
 
 Getting Started
 

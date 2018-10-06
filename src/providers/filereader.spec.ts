@@ -44,7 +44,7 @@ describe('INFORMATION_SCHEMA', async () => {
 
                 expect(column.name).eq(cinfo.COLUMN_NAME);
                 expect(column.max_length).eq(cinfo.CHARACTER_MAXIMUM_LENGTH);
-                expect(column.is_nullable).eq(cinfo.IS_NULLABLE);
+                expect(column.is_nullable).eq(cinfo.IS_NULLABLE === 'YES');
                 expect(column.db_type).eq(cinfo.DATA_TYPE);
             });
         });
