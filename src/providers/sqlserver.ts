@@ -68,7 +68,7 @@ export async function getConstraints(conn: mssql.ConnectionPool): Promise<INFORM
 
 
 
-export async function getDBSchema(conn: mssql.ConnectionPool): Promise<INFORMATION_SCHEMA | null> {
+async function getDBSchema(conn: mssql.ConnectionPool): Promise<INFORMATION_SCHEMA | null> {
     const tables = await getTableSchema(conn);
     const columns = await getColumnSchema(conn);
     const constraints = await getConstraints(conn);

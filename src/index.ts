@@ -1,6 +1,11 @@
 import { INFORMATION_SCHEMA, INFORMATION_SCHEMA_CONSTRAINT, CONSTRAINT_TYPE, INFORMATION_SCHEMA_COLUMN, INFORMATION_SCHEMA_TABLE, TABLE_TYPE, IInformationSchemaReader } from './INFORMATION_SCHEMA';
 import { groupBy } from './utils';
 
+
+export { IInformationSchemaReader } from './INFORMATION_SCHEMA';
+export { SqlServerInformationSchemaReader } from './providers/sqlserver';
+export { FileInformationSchemaReader } from './providers/filereader';
+
 export type ObjectName = {
     db_name: string;
     schema: string;
@@ -276,7 +281,7 @@ function MapColumn(column: INFORMATION_SCHEMA_COLUMN, primaryKeys: string[], uni
 
     return {
         name: column.COLUMN_NAME,
-        is_nullable: column.IS_NULLABLE,
+        is_nullable: column.IS_NULLABLE === 'YES',
         is_identity: column.IS_IDENTITY,
         is_part_of_primary_key: isPartOfPrimaryKey,
         is_only_primary_key: isOnlyPrimaryKey,

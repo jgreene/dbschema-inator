@@ -14,7 +14,7 @@ export type INFORMATION_SCHEMA_COLUMN = {
     TABLE_TYPE: string;
     COLUMN_NAME: string;
     ORDINAL_POSITION: number;
-    IS_NULLABLE: boolean;
+    IS_NULLABLE: string;
     DATA_TYPE: string;
     CHARACTER_MAXIMUM_LENGTH: number | null;
     CHARACTER_OCTET_LENGTH: number | null;
