@@ -1,3 +1,8 @@
+create database [dbschema-inator]
+GO
+use [dbschema-inator]
+GO
+
 create table dbo.Person (
 	ID INT NOT NULL PRIMARY KEY IDENTITY(1,1), 
 	FirstName NVARCHAR(50) NOT NULL, 

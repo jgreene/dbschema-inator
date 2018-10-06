@@ -54,6 +54,7 @@ export type ColumnSchema = {
     is_part_of_unique_constraint: boolean;
     is_only_member_of_unique_constraint: boolean;
     db_type: string;
+    db_default: string | null;
     max_length: number | null;
 }
 
@@ -288,6 +289,7 @@ function MapColumn(column: INFORMATION_SCHEMA_COLUMN, primaryKeys: string[], uni
         is_part_of_unique_constraint: is_part_of_unique_constraint,
         is_only_member_of_unique_constraint: is_only_member_of_unique_constraint,
         db_type: column.DATA_TYPE,
+        db_default: column.COLUMN_DEFAULT,
         max_length: column.CHARACTER_MAXIMUM_LENGTH
     };
 }

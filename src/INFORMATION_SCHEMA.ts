@@ -13,6 +13,7 @@ export type INFORMATION_SCHEMA_COLUMN = {
     TABLE_NAME: string;
     TABLE_TYPE: string;
     COLUMN_NAME: string;
+    COLUMN_DEFAULT: string | null;
     ORDINAL_POSITION: number;
     IS_NULLABLE: string;
     DATA_TYPE: string;

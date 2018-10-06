@@ -81,10 +81,12 @@ describe('INFORMATION_SCHEMA', async () => {
         expect(firstNameColumn!.is_part_of_primary_key).eq(false);
         expect(firstNameColumn!.db_type).eq('nvarchar');
         expect(firstNameColumn!.max_length).eq(50);
+        expect(firstNameColumn!.db_default).is.null;
 
         const personGUID = at.columns.find(c => c.name === 'PersonGUID');
         expect(personGUID!.is_part_of_unique_constraint).eq(true);
         expect(personGUID!.is_only_member_of_unique_constraint).eq(true);
+        expect(personGUID!.db_default).eq('(newid())')
 
         const fk_PersonAddress_PersonID = at.one_to_manys.filter(mto => mto.constraint_name.name === 'FK_PersonAddress_PersonID')[0]
         expect(fk_PersonAddress_PersonID!.child_table.name).eq('PersonAddress');
