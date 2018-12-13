@@ -1,6 +1,6 @@
 {
     "name": "dbschema-inator",
-    "version": "0.0.05",
+    "version": "0.0.06",
     "description": "fetch sql database schema into a friendly data model for code generation",
     "license": "MIT",
     "files": [
@@ -19,8 +19,8 @@
       "@types/mssql": "^4.0.10",
       "@types/mocha": "^5.2.5",
       "@types/chai": "^4.1.6",
-      "mssql": "^4.2.1",
-      "msnodesqlv8": "^0.6.8",
+      "mssql": "^4.3.0",
+      "msnodesqlv8": "^0.6.11",
       "mocha": "^5.2.0",
       "chai": "^4.2.0"
     },

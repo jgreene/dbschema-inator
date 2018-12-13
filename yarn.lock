@@ -128,10 +128,10 @@ debug@3.1.0:
   dependencies:
     ms "2.0.0"
 
-debug@^3.1.0:
-  version "3.2.5"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-3.2.5.tgz#c2418fbfd7a29f4d4f70ff4cea604d4b64c46407"
-  integrity sha512-D61LaDQPQkxJ5AUM2mbSJRbPkNs/TmdmOeLAi1hgDkpDfIfetSrjmWhccwtuResSwMbACjx/xXQofvM9CE/aeg==
+debug@^3.2.6:
+  version "3.2.6"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-3.2.6.tgz#e83d17de16d8a7efb7717edbe5fb10135eee629b"
+  integrity sha512-mel+jf7nrtEl5Pn1Qx46zARXKDpBbvzezse7p7LqINmdoIk8PYP5SySaxEmYv6TZ0JyEKA1hsCId6DIhgITtWQ==
   dependencies:
     ms "^2.1.1"
 
@@ -292,19 +292,19 @@ ms@^2.1.1:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.1.tgz#30a5864eb3ebb0a66f2ebe6d727af06a09d86e0a"
   integrity sha512-tgp+dl5cGk28utYktBsrFqA7HKgrhgPsg6Z/EfhWI4gl1Hwq8B/GmY/0oXZ6nF8hDVesS/FpnYaD/kOWhYQvyg==
 
-msnodesqlv8@^0.6.8:
-  version "0.6.8"
-  resolved "https://registry.yarnpkg.com/msnodesqlv8/-/msnodesqlv8-0.6.8.tgz#cd785f1c5bfeadb78d0229884c339a2956d193be"
-  integrity sha512-qfPF7RP9bBGujuLWcbY12/f8ly8MuFggaQWtWXjIf/PTtYV40ey5VYrbBJhtFvTOvH47lW2PyV+MApNr1ZZFyA==
+msnodesqlv8@^0.6.11:
+  version "0.6.11"
+  resolved "https://registry.yarnpkg.com/msnodesqlv8/-/msnodesqlv8-0.6.11.tgz#a7e16fc0ff66bc3348de75ee6163a6593d4503b9"
+  integrity sha512-DKtLqJMjqf4Jv6YDrW+mcLgYOwdWte+3x4vmUOssSir45nCRyy/r+kwAjwciczxbQcBEU7b7QcE/tWy0iAq/Eg==
 
-mssql@^4.2.1:
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/mssql/-/mssql-4.2.1.tgz#c7133247e912d71185b09d3c2bae0f19345fcde6"
-  integrity sha512-89mJcK/xgcsRdlCfEZxRsE93NKZnZJFSASy7Eiw4Bx6exvkGb9Kd1ey9d9/jODTFssoZ3U0OOFK3wabYMpJypQ==
+mssql@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/mssql/-/mssql-4.3.0.tgz#1ff6d1392a3332236fefd66b48c3d44e9630ff80"
+  integrity sha512-MpSwdLMbKfFL3DwjhgbJdFViU+ye9YR+op/t/CdhWwYdA90qWYjPyWbIzso/2xRfm7liYNkN5EZjAS9PWFLLZg==
   dependencies:
-    debug "^3.1.0"
+    debug "^3.2.6"
     generic-pool "^3.4.2"
-    tedious "^2.6.4"
+    tedious "^2.7.1"
 
 native-duplexpair@^1.0.0:
   version "1.0.0"
@@ -405,10 +405,10 @@ supports-color@5.4.0:
   dependencies:
     has-flag "^3.0.0"
 
-tedious@^2.6.4:
-  version "2.6.4"
-  resolved "https://registry.yarnpkg.com/tedious/-/tedious-2.6.4.tgz#b3dee882458fbed8e7c8778156344f049dda3f38"
-  integrity sha512-upFZB4QahZydPIV2VK3H/bz8Fsq5FSjqbxDbhhp1c/66ZJB1qCk5p1cXi2p/VUOgAYbmAzVObTg5kaVvmeyN+Q==
+tedious@^2.7.1:
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/tedious/-/tedious-2.7.1.tgz#5308edebdd33767ca67b36fc71b2ab9c54675278"
+  integrity sha512-u3ciATGm5byim91b3+c3MVTvY1zKjDmhUhnBQZXKymT2Vb9w322dziPQY6MhBNyBEcNONPsAMR+7/Uub7NYABQ==
   dependencies:
     babel-runtime "^6.26.0"
     big-number "0.3.1"
