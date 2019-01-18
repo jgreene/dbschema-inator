@@ -1,0 +1,27 @@
+{
+    "name": "dbschema-inator",
+    "version": "0.0.7",
+    "description": "fetch sql database schema into a friendly data model for code generation",
+    "license": "MIT",
+    "files": [
+      "lib"
+    ],
+    "main": "lib/index.js",
+    "typings": "lib/index.d.ts",
+    "scripts": {
+      "clean": "rimraf lib",
+      "test": "mocha -r ts-node/register src/**/*.spec.ts",
+      "testintegration": "mocha -r ts-node/register src/**/*.integration.ts --timeout 15000",
+      "watch": "yarn run test -- --watch-extensions ts --watch -R min",
+      "build": "tsc -b"
+    },
+    "devDependencies": {
+      "@types/mocha": "^5.2.5",
+      "@types/chai": "^4.1.6",
+      "mocha": "^5.2.0",
+      "chai": "^4.2.0",
+      "rimraf": "^2.6.2",
+      "typescript": "^3.2.4",
+      "ts-node": "^7.0.1"
+    }
+  }

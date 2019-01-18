@@ -3,8 +3,7 @@ import { groupBy } from './utils';
 
 
 export { IInformationSchemaReader } from './INFORMATION_SCHEMA';
-export { SqlServerInformationSchemaReader } from './providers/sqlserver';
-export { FileInformationSchemaReader } from './providers/filereader';
+//export { FileInformationSchemaReader } from './providers/filereader';
 
 export type ObjectName = {
     db_name: string;

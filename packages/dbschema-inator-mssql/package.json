@@ -1,0 +1,33 @@
+{
+    "name": "dbschema-inator-mssql",
+    "version": "0.0.7",
+    "description": "dbschema-inator provider for mssql",
+    "license": "MIT",
+    "files": [
+      "lib"
+    ],
+    "main": "lib/index.js",
+    "typings": "lib/index.d.ts",
+    "scripts": {
+      "clean": "rimraf lib",
+      "test_old": "mocha -r ts-node/register src/**/*.spec.ts",
+      "testintegration": "mocha -r ts-node/register src/**/*.integration.ts --timeout 15000",
+      "watch": "npm run test -- --watch-extensions ts --watch -R min",
+      "build": "tsc -b"
+    },
+    "dependencies": {
+      "@types/mssql": "^4.0.10",
+      "mssql": "^4.3.0",
+      "msnodesqlv8": "^0.6.11",
+      "dbschema-inator": "^0.0.7"
+    },
+    "devDependencies": {
+      "@types/mocha": "^5.2.5",
+      "@types/chai": "^4.1.6",
+      "mocha": "^5.2.0",
+      "chai": "^4.2.0",
+      "rimraf": "^2.6.2",
+      "typescript": "^3.2.4",
+      "ts-node": "^7.0.1"
+    }
+  }

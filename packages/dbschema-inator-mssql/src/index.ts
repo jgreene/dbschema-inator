@@ -1,6 +1,6 @@
 import * as mssql from 'mssql/msnodesqlv8';
 
-import { IInformationSchemaReader, INFORMATION_SCHEMA_TABLE, INFORMATION_SCHEMA_COLUMN, INFORMATION_SCHEMA_CONSTRAINT, INFORMATION_SCHEMA } from '../INFORMATION_SCHEMA';
+import { IInformationSchemaReader, INFORMATION_SCHEMA_TABLE, INFORMATION_SCHEMA_COLUMN, INFORMATION_SCHEMA_CONSTRAINT, INFORMATION_SCHEMA } from 'dbschema-inator';
 
 export async function getTableSchema(conn: mssql.ConnectionPool): Promise<INFORMATION_SCHEMA_TABLE[]> {
     let res = await conn.query`select * from INFORMATION_SCHEMA.TABLES`;

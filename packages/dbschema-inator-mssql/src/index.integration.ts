@@ -3,8 +3,8 @@ import "chai";
 
 import * as fs from 'fs';
 
-import { SqlServerInformationSchemaReader } from './sqlserver';
-import { getDBSchema } from '../index';
+import { SqlServerInformationSchemaReader } from './index';
+import { getDBSchema } from 'dbschema-inator';
 
 const config = {
     driver: 'msnodesqlv8',

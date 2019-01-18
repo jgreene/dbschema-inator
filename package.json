@@ -1,32 +1,23 @@
 {
-    "name": "dbschema-inator",
-    "version": "0.0.06",
-    "description": "fetch sql database schema into a friendly data model for code generation",
-    "license": "MIT",
-    "files": [
-      "lib"
-    ],
-    "main": "lib/index.js",
-    "typings": "lib/index.d.ts",
-    "scripts": {
-      "clean": "rimraf dist",
-      "test": "mocha -r ts-node/register src/**/*.spec.ts",
-      "testintegration": "mocha -r ts-node/register src/**/*.integration.ts --timeout 15000",
-      "watch": "npm run test -- --watch-extensions ts --watch -R min",
-      "build": "tsc -d -p ."
-    },
-    "dependencies": {
-      "@types/mssql": "^4.0.10",
-      "@types/mocha": "^5.2.5",
-      "@types/chai": "^4.1.6",
-      "mssql": "^4.3.0",
-      "msnodesqlv8": "^0.6.11",
-      "mocha": "^5.2.0",
-      "chai": "^4.2.0"
-    },
-    "devDependencies": {
-      "rimraf": "^2.6.2",
-      "typescript": "^3.1.1",
-      "ts-node": "^7.0.0"
-    }
-  }
+  "name": "dbschema-inator-top",
+  "private": true,
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "lerna run start --stream",
+    "clean": "lerna run clean --stream",
+    "build": "lerna run build --stream",
+    "test": "lerna run test --stream",
+    "integration": "lerna run integration --stream",
+    "watch": "lerna run watch --stream"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "lerna": "^3.4.0",
+    "typescript": "^3.2.2"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
+}
