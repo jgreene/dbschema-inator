@@ -1,11 +1,12 @@
 import { expect } from 'chai';
 import 'mocha';
 
-import { FileInformationSchemaReader } from './filereader';
-import { getDBSchema } from '../index';
+
+import { getDBSchema } from 'dbschema-inator';
+import { FileInformationSchemaReader } from './index';
 
 describe('INFORMATION_SCHEMA', async () => {
-    const reader = new FileInformationSchemaReader('./src/providers/test_schema.json');
+    const reader = new FileInformationSchemaReader('./src/test_schema.json');
     
     it('Can get INFORMATION_SCHEMA', async () => {
         const info_schema = await reader.read();

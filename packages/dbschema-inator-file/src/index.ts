@@ -1,5 +1,8 @@
 
-import { IInformationSchemaReader, INFORMATION_SCHEMA_TABLE, INFORMATION_SCHEMA_COLUMN, INFORMATION_SCHEMA_CONSTRAINT, INFORMATION_SCHEMA } from '../INFORMATION_SCHEMA';
+import { 
+    IInformationSchemaReader, 
+    INFORMATION_SCHEMA 
+} from 'dbschema-inator/lib/INFORMATION_SCHEMA';
 
 import * as fs from 'fs';
 import * as util from 'util';
