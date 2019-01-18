@@ -1,16 +1,22 @@
 import * as mssql from 'mssql/msnodesqlv8';
 
-import { IInformationSchemaReader, INFORMATION_SCHEMA_TABLE, INFORMATION_SCHEMA_COLUMN, INFORMATION_SCHEMA_CONSTRAINT, INFORMATION_SCHEMA } from 'dbschema-inator';
+import { 
+    IInformationSchemaReader, 
+    INFORMATION_SCHEMA_TABLE, 
+    INFORMATION_SCHEMA_COLUMN, 
+    INFORMATION_SCHEMA_CONSTRAINT, 
+    INFORMATION_SCHEMA 
+} from 'dbschema-inator/lib/INFORMATION_SCHEMA';
 
 export async function getTableSchema(conn: mssql.ConnectionPool): Promise<INFORMATION_SCHEMA_TABLE[]> {
     let res = await conn.query`select * from INFORMATION_SCHEMA.TABLES`;
-    
+
     return res.recordset;
 }
 
 export async function getColumnSchema(conn: mssql.ConnectionPool): Promise<INFORMATION_SCHEMA_COLUMN[]> {
     let res = await conn.query`select *, CONVERT(bit, CASE WHEN COLUMNPROPERTY(OBJECT_ID(Table_Name),[Column_name],'IsIdentity') = 1 then 1 else 0 end) AS IS_IDENTITY from INFORMATION_SCHEMA.COLUMNS`;
-    
+
     return res.recordset;
 }
 
@@ -62,7 +68,7 @@ export async function getConstraints(conn: mssql.ConnectionPool): Promise<INFORM
         SELECT * FROM Constraints
         ORDER BY
             constraint_schema, table_name, constraint_name, ordinal_position`;
-    
+
     return res.recordset;
 }
 
@@ -73,8 +79,7 @@ async function getDBSchema(conn: mssql.ConnectionPool): Promise<INFORMATION_SCHE
     const columns = await getColumnSchema(conn);
     const constraints = await getConstraints(conn);
     const first_table = tables.length > 0 ? tables[0] : null;
-    if(first_table == null)
-    {
+    if (first_table == null) {
         return null;
     }
 
@@ -88,7 +93,7 @@ async function getDBSchema(conn: mssql.ConnectionPool): Promise<INFORMATION_SCHE
 
 export class SqlServerInformationSchemaReader implements IInformationSchemaReader {
 
-    constructor(protected config: mssql.config) {}
+    constructor(protected config: mssql.config) { }
 
     private async connect(): Promise<mssql.ConnectionPool> {
         return new Promise<mssql.ConnectionPool>((resolve, reject) => {

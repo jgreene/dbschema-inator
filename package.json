@@ -8,6 +8,7 @@
     "clean": "lerna run clean --stream",
     "build": "lerna run build --stream",
     "test": "lerna run test --stream",
+    "testintegration": "lerna run testintegration --stream",
     "integration": "lerna run integration --stream",
     "watch": "lerna run watch --stream"
   },

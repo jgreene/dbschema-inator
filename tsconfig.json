@@ -2,8 +2,10 @@
     "files": [],
     "compilerOptions": {
         "composite": true,
+        "esModuleInterop": true,
         "sourceMap": true,
         "declaration": true,
+        "declarationMap": true,
         "module": "commonjs",
         "strict": true,
         "noImplicitReturns": false,
@@ -16,10 +18,8 @@
         "moduleResolution": "node",
         "forceConsistentCasingInFileNames": true,
         "experimentalDecorators": true,
-        "types": ["node"],
         "lib": [
-            "es6",
-            "dom"
+            "es6"
         ]
     },
     "references": [

@@ -16,14 +16,14 @@
       "build": "tsc -b"
     },
     "dependencies": {
+      "@types/mocha": "^5.2.5",
+      "@types/chai": "^4.1.6",
       "@types/mssql": "^4.0.10",
       "mssql": "^4.3.0",
       "msnodesqlv8": "^0.6.11",
       "dbschema-inator": "^0.0.7"
     },
     "devDependencies": {
-      "@types/mocha": "^5.2.5",
-      "@types/chai": "^4.1.6",
       "mocha": "^5.2.0",
       "chai": "^4.2.0",
       "rimraf": "^2.6.2",

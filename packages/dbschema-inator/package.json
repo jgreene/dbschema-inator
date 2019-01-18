@@ -11,7 +11,7 @@
     "scripts": {
       "clean": "rimraf lib",
       "test": "mocha -r ts-node/register src/**/*.spec.ts",
-      "testintegration": "mocha -r ts-node/register src/**/*.integration.ts --timeout 15000",
+      "testintegration_old": "mocha -r ts-node/register src/**/*.integration.ts --timeout 15000",
       "watch": "yarn run test -- --watch-extensions ts --watch -R min",
       "build": "tsc -b"
     },
