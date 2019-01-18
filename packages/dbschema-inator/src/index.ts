@@ -1,9 +1,10 @@
-import { INFORMATION_SCHEMA, INFORMATION_SCHEMA_CONSTRAINT, CONSTRAINT_TYPE, INFORMATION_SCHEMA_COLUMN, INFORMATION_SCHEMA_TABLE, TABLE_TYPE, IInformationSchemaReader } from './INFORMATION_SCHEMA';
+import { 
+    INFORMATION_SCHEMA, 
+    INFORMATION_SCHEMA_COLUMN, 
+    TABLE_TYPE, 
+    IInformationSchemaReader 
+} from './INFORMATION_SCHEMA';
 import { groupBy } from './utils';
-
-
-export { IInformationSchemaReader } from './INFORMATION_SCHEMA';
-//export { FileInformationSchemaReader } from './providers/filereader';
 
 export type ObjectName = {
     db_name: string;
