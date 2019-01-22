@@ -1,5 +1,15 @@
 import { getDBSchema } from 'dbschema-inator';
-import { FileInformationSchemaReader } from './index';
+import { FileInformationSchemaReader, getDBSchema as getFileDBSchema } from './index';
+
+import { runTests } from 'dbschema-inator/src/tests'
+
+test('file dbschema tests', async () => {
+    const schema = await getFileDBSchema('./src/test_schema.json');
+
+    expect(schema).not.toBeNull()
+
+    runTests('dbo', schema!);
+})
 
 describe('INFORMATION_SCHEMA', async () => {
     const reader = new FileInformationSchemaReader('./src/test_schema.json');

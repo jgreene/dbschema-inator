@@ -1,5 +1,7 @@
 import * as pg from 'pg';
 
+import { getDBSchema as internalGetDBSchema, DBSchema } from 'dbschema-inator'
+
 import { 
     IInformationSchemaReader, 
     INFORMATION_SCHEMA_TABLE, 
@@ -81,7 +83,7 @@ export async function getConstraints(conn: pg.Pool): Promise<INFORMATION_SCHEMA_
 
 
 
-async function getDBSchema(conn: pg.Pool): Promise<INFORMATION_SCHEMA | null> {
+async function getInformationSchema(conn: pg.Pool): Promise<INFORMATION_SCHEMA | null> {
     const tables = await getTableSchema(conn);
     const columns = await getColumnSchema(conn);
     const constraints = await getConstraints(conn);
@@ -110,11 +112,17 @@ export class PostgresqlInformationSchemaReader implements IInformationSchemaRead
     public async read() {
         const db = await this.connect();
         try{
-            const schema = await getDBSchema(db);
+            const schema = await getInformationSchema(db);
             return schema;
         }
         finally {
             await db.end();
         }
     }
+}
+
+export async function getDBSchema(config: pg.PoolConfig): Promise<DBSchema | null> {
+    const reader = new PostgresqlInformationSchemaReader(config);
+    const schema = await internalGetDBSchema(reader);
+    return schema;
 }

@@ -1,5 +1,4 @@
-import { SqlServerInformationSchemaReader } from './index';
-import { getDBSchema } from 'dbschema-inator';
+import { getDBSchema } from './index';
 
 import { runTests } from 'dbschema-inator/src/tests'
 
@@ -13,8 +12,7 @@ const config = {
 };
 
 test('mssql dbschema tests', async () => {
-    const db = new SqlServerInformationSchemaReader(config);
-    const schema = await getDBSchema(db);
+    const schema = await getDBSchema(config);
 
     expect(schema).not.toBeNull()
 

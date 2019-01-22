@@ -1,6 +1,8 @@
 import * as mssql from 'mssql/msnodesqlv8';
 import { PathReporter } from 'io-ts/lib/PathReporter'
 
+import { getDBSchema as internalGetDBSchema, DBSchema } from 'dbschema-inator'
+
 import { 
     IInformationSchemaReader, 
     INFORMATION_SCHEMA_TABLE_Type,
@@ -134,7 +136,7 @@ export async function getConstraints(conn: mssql.ConnectionPool): Promise<INFORM
 
 
 
-async function getDBSchema(conn: mssql.ConnectionPool): Promise<INFORMATION_SCHEMA | null> {
+async function getInformationSchema(conn: mssql.ConnectionPool): Promise<INFORMATION_SCHEMA | null> {
     const tables = await getTableSchema(conn);
     const columns = await getColumnSchema(conn);
     const constraints = await getConstraints(conn);
@@ -169,8 +171,14 @@ export class SqlServerInformationSchemaReader implements IInformationSchemaReade
 
     public async read() {
         const db = await this.connect();
-        const schema = await getDBSchema(db);
+        const schema = await getInformationSchema(db);
         await db.close();
         return schema;
     }
+}
+
+export async function getDBSchema(config: mssql.config): Promise<DBSchema | null> {
+    const reader = new SqlServerInformationSchemaReader(config);
+    const schema = await internalGetDBSchema(reader);
+    return schema;
 }
