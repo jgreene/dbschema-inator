@@ -1,78 +1,93 @@
+import * as t from 'io-ts'
+
 import { 
     INFORMATION_SCHEMA, 
     INFORMATION_SCHEMA_COLUMN, 
+    TABLE_TYPE_Type,
     TABLE_TYPE, 
     IInformationSchemaReader 
 } from './INFORMATION_SCHEMA';
 import { groupBy } from './utils';
 
-export type ObjectName = {
-    db_name: string;
-    schema: string;
-    name: string;
-}
+export const ObjectNameType = t.type({
+    db_name: t.string,
+    schema: t.string,
+    name: t.string
+})
 
-export type ManyToOne = {
-    constraint_name: ObjectName;
-    parent_table: ObjectName;
-    column_map: Array<{
-        column: string,
-        parent_column: string
-    }>
-}
+export type ObjectName = t.TypeOf<typeof ObjectNameType>
 
-export type OneToMany = {
-    constraint_name: ObjectName;
-    child_table: ObjectName;
-    column_map: Array<{
-        column: string,
-        child_column: string
-    }>
-}
+export const ManyToOneType = t.type({
+    constraint_name: ObjectNameType,
+    parent_table: ObjectNameType,
+    column_map: t.array(t.type({
+        column: t.string,
+        parent_column: t.string
+    }))
+})
 
-export type OneToOne = {
-    constraint_name: ObjectName;
-    sibling_table: ObjectName;
-    column_map: Array<{
-        column: string,
-        sibling_column: string
-    }>
-}
+export type ManyToOne = t.TypeOf<typeof ManyToOneType>
 
-export type UniqueConstraint = {
-    name: ObjectName;
-    table: ObjectName;
-    columns: string[];
-}
+export const OneToManyType = t.type({
+    constraint_name: ObjectNameType,
+    child_table: ObjectNameType,
+    column_map: t.array(t.type({
+        column: t.string,
+        child_column: t.string
+    }))
+})
 
-export type ColumnSchema = {
-    name: string;
-    is_nullable: boolean;
-    is_identity: boolean;
-    is_part_of_primary_key: boolean;
-    is_only_primary_key: boolean;
-    is_part_of_unique_constraint: boolean;
-    is_only_member_of_unique_constraint: boolean;
-    db_type: string;
-    db_default: string | null;
-    max_length: number | null;
-}
+export type OneToMany = t.TypeOf<typeof OneToManyType>
 
-export type TableSchema = {
-    name: ObjectName;
-    type: TABLE_TYPE;
-    columns: ColumnSchema[];
-    primary_keys: string[];
-    many_to_ones: ManyToOne[];
-    one_to_manys: OneToMany[];
-    one_to_ones: OneToOne[];
-    unique_constraints: UniqueConstraint[];
-}
+export const OneToOneType = t.type({
+    constraint_name: ObjectNameType,
+    sibling_table: ObjectNameType,
+    column_map: t.array(t.type({
+        column: t.string,
+        sibling_column: t.string
+    }))
+})
 
-export type DBSchema = {
-    name: string;
-    tables: TableSchema[]
-}
+export type OneToOne = t.TypeOf<typeof OneToOneType>
+
+export const UniqueConstraintType = t.type({
+    name: ObjectNameType,
+    table: ObjectNameType,
+    columns: t.array(t.string)
+})
+
+export type UniqueConstraint = t.TypeOf<typeof UniqueConstraintType>
+
+export const ColumnSchemaType = t.type({
+    name: t.string,
+    is_nullable: t.boolean,
+    is_identity: t.boolean,
+    db_type: t.string,
+    db_default: t.union([t.string, t.null]),
+    max_length: t.union([t.number, t.null])
+})
+
+export type ColumnSchema = t.TypeOf<typeof ColumnSchemaType>
+
+export const TableSchemaType = t.type({
+    name: ObjectNameType,
+    type: TABLE_TYPE_Type,
+    columns: t.array(ColumnSchemaType),
+    primary_keys: t.array(t.string),
+    many_to_ones: t.array(ManyToOneType),
+    one_to_manys: t.array(OneToManyType),
+    one_to_ones: t.array(OneToOneType),
+    unique_constraints: t.array(UniqueConstraintType)
+})
+
+export type TableSchema = t.TypeOf<typeof TableSchemaType>
+
+export const DBSchemaType = t.type({
+    name: t.string,
+    tables: t.array(TableSchemaType)
+})
+
+export type DBSchema = t.TypeOf<typeof DBSchemaType>
 
 function GetPrimaryKeyColumns(info: INFORMATION_SCHEMA, name: ObjectName): string[] {
     const primaryKeys = info.constraints.filter(c => c.CONSTRAINT_TYPE === 'PRIMARY KEY' && c.TABLE_CATALOG === name.db_name && c.TABLE_SCHEMA === name.schema && c.TABLE_NAME === name.name);
@@ -274,28 +289,21 @@ function GetUniqueConstraints(info: INFORMATION_SCHEMA, name: ObjectName): Uniqu
     }).filter(mto => mto !== null).map(mto => mto!);
 }
 
-function MapColumn(column: INFORMATION_SCHEMA_COLUMN, primaryKeys: string[], uniqueConstraints: UniqueConstraint[]): ColumnSchema {
-    const isPartOfPrimaryKey = primaryKeys.indexOf(column.COLUMN_NAME) !== -1;
-    const isOnlyPrimaryKey = isPartOfPrimaryKey && primaryKeys.length === 1;
-    const is_part_of_unique_constraint = uniqueConstraints.some(uc => uc.columns.indexOf(column.COLUMN_NAME) !== -1);
-    const is_only_member_of_unique_constraint = uniqueConstraints.some(uc => uc.columns.indexOf(column.COLUMN_NAME) !== -1 && uc.columns.length === 1);
-
+function MapColumn(column: INFORMATION_SCHEMA_COLUMN): ColumnSchema {
     return {
         name: column.COLUMN_NAME,
         is_nullable: column.IS_NULLABLE === 'YES',
-        is_identity: column.IS_IDENTITY,
-        is_part_of_primary_key: isPartOfPrimaryKey,
-        is_only_primary_key: isOnlyPrimaryKey,
-        is_part_of_unique_constraint: is_part_of_unique_constraint,
-        is_only_member_of_unique_constraint: is_only_member_of_unique_constraint,
+        is_identity: column.IS_IDENTITY === 'YES' || column.IS_IDENTITY === true ? true : false,
         db_type: column.DATA_TYPE,
         db_default: column.COLUMN_DEFAULT,
         max_length: column.CHARACTER_MAXIMUM_LENGTH
     };
 }
 
-function MapColumns(info: INFORMATION_SCHEMA, name: ObjectName, primaryKeys: string[], uniqueConstraints: UniqueConstraint[]){
-    const columns = info.columns.filter(c => c.TABLE_CATALOG === name.db_name && c.TABLE_SCHEMA === name.schema && c.TABLE_NAME == name.name).map(c => MapColumn(c, primaryKeys, uniqueConstraints));
+function MapColumns(info: INFORMATION_SCHEMA, name: ObjectName){
+    const columns = info.columns
+                        .filter(c => c.TABLE_CATALOG === name.db_name && c.TABLE_SCHEMA === name.schema && c.TABLE_NAME == name.name)
+                        .map(MapColumn);
     return columns;
 }
 
@@ -303,7 +311,7 @@ function MapTable(info: INFORMATION_SCHEMA, name: ObjectName, type: TABLE_TYPE):
 {
     const primaryKeys = GetPrimaryKeyColumns(info, name);
     const uniqueConstraints = GetUniqueConstraints(info, name);
-    const columns = MapColumns(info, name, primaryKeys, uniqueConstraints);
+    const columns = MapColumns(info, name);
     
     const oneToOnes = GetOneToOnes(info, name, columns, primaryKeys);
     const manyToOnes = GetManyToOnes(info, name, oneToOnes);

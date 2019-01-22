@@ -1,9 +1,13 @@
 import * as mssql from 'mssql/msnodesqlv8';
+import { PathReporter } from 'io-ts/lib/PathReporter'
 
 import { 
     IInformationSchemaReader, 
+    INFORMATION_SCHEMA_TABLE_Type,
     INFORMATION_SCHEMA_TABLE, 
+    INFORMATION_SCHEMA_COLUMN_Type,
     INFORMATION_SCHEMA_COLUMN, 
+    INFORMATION_SCHEMA_CONSTRAINT_Type,
     INFORMATION_SCHEMA_CONSTRAINT, 
     INFORMATION_SCHEMA 
 } from 'dbschema-inator/lib/INFORMATION_SCHEMA';
@@ -11,13 +15,61 @@ import {
 export async function getTableSchema(conn: mssql.ConnectionPool): Promise<INFORMATION_SCHEMA_TABLE[]> {
     let res = await conn.query`select * from INFORMATION_SCHEMA.TABLES`;
 
-    return res.recordset;
+    return res.recordset.map(r => {
+        const res = INFORMATION_SCHEMA_TABLE_Type.decode(r)
+        if(res.isLeft())
+        {
+            throw new Error('Invalid INFORMATION_SCHEMA_TABLE: ' + PathReporter.report(res));
+        }
+
+        return res.value
+    });
 }
 
-export async function getColumnSchema(conn: mssql.ConnectionPool): Promise<INFORMATION_SCHEMA_COLUMN[]> {
-    let res = await conn.query`select *, CONVERT(bit, CASE WHEN COLUMNPROPERTY(OBJECT_ID(Table_Name),[Column_name],'IsIdentity') = 1 then 1 else 0 end) AS IS_IDENTITY from INFORMATION_SCHEMA.COLUMNS`;
+/*
+TABLE_SCHEMA: t.string,
+    TABLE_NAME: t.string,
+    COLUMN_NAME: t.string,
+    COLUMN_DEFAULT: t.union([t.string, t.null]),
+    ORDINAL_POSITION: t.number,
+    IS_NULLABLE: t.union([t.literal('YES'), t.literal('NO')]),
+    DATA_TYPE: t.string,
+    CHARACTER_MAXIMUM_LENGTH: t.union([t.number, t.null]),
+    CHARACTER_OCTET_LENGTH: t.union([t.number, t.null]),
+    NUMERIC_PRECISION: t.union([t.number, t.null]),
+    NUMERIC_PRECISION_RADIX: t.union([t.number, t.null]),
+    NUMERIC_SCALE: t.union([t.number, t.null]),
+    IS_IDENTITY: t.union([t.literal('YES'), t.literal('NO'), t.boolean])
+*/
 
-    return res.recordset;
+export async function getColumnSchema(conn: mssql.ConnectionPool): Promise<INFORMATION_SCHEMA_COLUMN[]> {
+    let res = await conn.query`
+    select 
+        TABLE_CATALOG,
+        TABLE_SCHEMA,
+        TABLE_NAME,
+        COLUMN_NAME,
+        COLUMN_DEFAULT,
+        ORDINAL_POSITION,
+        IS_NULLABLE,
+        DATA_TYPE,
+        CHARACTER_MAXIMUM_LENGTH,
+        CHARACTER_OCTET_LENGTH,
+        NUMERIC_PRECISION,
+        NUMERIC_PRECISION_RADIX,
+        NUMERIC_SCALE,
+        CONVERT(bit, CASE WHEN COLUMNPROPERTY(OBJECT_ID(Table_Name),[Column_name],'IsIdentity') = 1 then 1 else 0 end) AS IS_IDENTITY 
+    from INFORMATION_SCHEMA.COLUMNS`;
+
+    return res.recordset.map(r => {
+        const res = INFORMATION_SCHEMA_COLUMN_Type.decode(r)
+        if(res.isLeft())
+        {
+            throw new Error('Invalid INFORMATION_SCHEMA_COLUMN: ' + PathReporter.report(res));
+        }
+
+        return res.value
+    });
 }
 
 export async function getConstraints(conn: mssql.ConnectionPool): Promise<INFORMATION_SCHEMA_CONSTRAINT[]> {
@@ -69,7 +121,15 @@ export async function getConstraints(conn: mssql.ConnectionPool): Promise<INFORM
         ORDER BY
             constraint_schema, table_name, constraint_name, ordinal_position`;
 
-    return res.recordset;
+    return res.recordset.map(r => {
+        const res = INFORMATION_SCHEMA_CONSTRAINT_Type.decode(r)
+        if(res.isLeft())
+        {
+            throw new Error('Invalid INFORMATION_SCHEMA_CONSTRAINT: ' + PathReporter.report(res));
+        }
+
+        return res.value
+    });;
 }
 
 
@@ -99,10 +159,8 @@ export class SqlServerInformationSchemaReader implements IInformationSchemaReade
         return new Promise<mssql.ConnectionPool>((resolve, reject) => {
             const db = new mssql.ConnectionPool(this.config, err => {
                 if (err) {
-                    console.error("Connection failed.", err);
                     reject(err);
                 } else {
-                    console.log("Database pool #1 connected.");
                     resolve(db);
                 }
             });

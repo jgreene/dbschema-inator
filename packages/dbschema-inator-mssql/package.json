@@ -10,24 +10,21 @@
     "typings": "lib/index.d.ts",
     "scripts": {
       "clean": "rimraf lib",
-      "test_old": "mocha -r ts-node/register src/**/*.spec.ts",
-      "testintegration": "mocha -r ts-node/register src/**/*.integration.ts --timeout 15000",
+      "testintegration": "yarn run jest",
       "watch": "npm run test -- --watch-extensions ts --watch -R min",
       "build": "tsc -b"
     },
     "dependencies": {
-      "@types/mocha": "^5.2.5",
-      "@types/chai": "^4.1.6",
       "@types/mssql": "^4.0.10",
       "mssql": "^4.3.0",
       "msnodesqlv8": "^0.6.11",
       "dbschema-inator": "^0.0.7"
     },
     "devDependencies": {
-      "mocha": "^5.2.0",
-      "chai": "^4.2.0",
+      "jest": "^23.6.0",
+      "@types/jest": "^23.3.13",
+      "ts-jest": "^23.10.5",
       "rimraf": "^2.6.2",
-      "typescript": "^3.2.4",
-      "ts-node": "^7.0.1"
+      "typescript": "^3.2.4"
     }
   }

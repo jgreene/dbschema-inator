@@ -1,10 +1,7 @@
-import "mocha";
-import { expect } from 'chai';
-
-import * as fs from 'fs';
-
 import { SqlServerInformationSchemaReader } from './index';
 import { getDBSchema } from 'dbschema-inator';
+
+import { runTests } from 'dbschema-inator/src/tests'
 
 const config = {
     driver: 'msnodesqlv8',
@@ -15,38 +12,12 @@ const config = {
     }
 };
 
-async function time<T>(name: string, func: () => Promise<T>): Promise<T> {
-    const start = new Date();
-    const res = await func();
-    const end = new Date();
-    const diff = +end - +start;
-    console.log(name + ' took ' + diff);
-    return res;
-};
+test('mssql dbschema tests', async () => {
+    const db = new SqlServerInformationSchemaReader(config);
+    const schema = await getDBSchema(db);
 
-describe('INFORMATION_SCHEMA', async () => {
-    
-    it('Can get INFORMATION_SCHEMA', async () => {
-        const db = new SqlServerInformationSchemaReader(config);
-        const schema = await db.read();
+    expect(schema).not.toBeNull()
 
-        var result = true;
-
-        fs.writeFile('./src/test_schema.json', JSON.stringify(schema, null, 2), 'utf8', (err) => {
-            if(err){
-                result = false;
-                console.log(err);
-            }
-        });
-
-        expect(result).eq(true)
-        //console.log(schema);
-    });
-
-    it('Can get DBSchema', async () => {
-        const db = new SqlServerInformationSchemaReader(config);
-        const schema = await getDBSchema(db);
-        //console.log(JSON.stringify(schema, null, 2));
-    });
+    runTests('dbo', schema!);
 })
 

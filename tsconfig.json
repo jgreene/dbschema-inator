@@ -24,6 +24,8 @@
     },
     "references": [
         { "path": "packages/dbschema-inator" },
-        { "path": "packages/dbschema-inator-mssql" }
+        { "path": "packages/dbschema-inator-file" },
+        { "path": "packages/dbschema-inator-mssql" },
+        { "path": "packages/dbschema-inator-postgresql" }
     ]
 }

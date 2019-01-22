@@ -1,7 +1,7 @@
 {
-    "name": "dbschema-inator-file",
+    "name": "dbschema-inator-postgresql",
     "version": "0.0.7",
-    "description": "dbschema-inator reader for json file",
+    "description": "dbschema-inator provider for postgresql",
     "license": "MIT",
     "files": [
       "lib"
@@ -10,10 +10,12 @@
     "typings": "lib/index.d.ts",
     "scripts": {
       "clean": "rimraf lib",
-      "test": "yarn run jest",
+      "testintegration": "yarn run jest",
       "build": "tsc -b"
     },
     "dependencies": {
+      "@types/pg": "^7.4.11",
+      "pg": "^7.8.0",
       "dbschema-inator": "^0.0.7"
     },
     "devDependencies": {
@@ -21,6 +23,7 @@
       "@types/jest": "^23.3.13",
       "ts-jest": "^23.10.5",
       "rimraf": "^2.6.2",
-      "typescript": "^3.2.4"
+      "typescript": "^3.2.4",
+      "ts-node": "^7.0.1"
     }
   }

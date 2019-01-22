@@ -1,3 +1,19 @@
+select 
+        TABLE_CATALOG,
+        TABLE_NAME,
+        COLUMN_DEFAULT,
+        ORDINAL_POSITION,
+        IS_NULLABLE,
+        DATA_TYPE,
+        CHARACTER_MAXIMUM_LENGTH,
+        CHARACTER_OCTET_LENGTH,
+        NUMERIC_PRECISION,
+        NUMERIC_PRECISION_RADIX,
+        NUMERIC_SCALE,
+        CONVERT(bit, CASE WHEN COLUMNPROPERTY(OBJECT_ID(Table_Name),[Column_name],'IsIdentity') = 1 then 1 else 0 end) AS IS_IDENTITY 
+    
+
+
 create database [dbschema-inator]
 GO
 use [dbschema-inator]

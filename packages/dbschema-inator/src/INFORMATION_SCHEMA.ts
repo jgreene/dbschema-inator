@@ -1,59 +1,71 @@
-export type TABLE_TYPE = 'BASE TABLE' | 'VIEW'
+import * as t from 'io-ts'
 
-export type INFORMATION_SCHEMA_TABLE = {
-    TABLE_CATALOG: string;
-    TABLE_SCHEMA: string;
-    TABLE_NAME: string;
-    TABLE_TYPE: TABLE_TYPE;
-};
+export const TABLE_TYPE_Type = t.union([t.literal("BASE TABLE"), t.literal("VIEW")])
+export type TABLE_TYPE = t.TypeOf<typeof TABLE_TYPE_Type>
 
-export type INFORMATION_SCHEMA_COLUMN = {
-    TABLE_CATALOG: string;
-    TABLE_SCHEMA: string;
-    TABLE_NAME: string;
-    TABLE_TYPE: string;
-    COLUMN_NAME: string;
-    COLUMN_DEFAULT: string | null;
-    ORDINAL_POSITION: number;
-    IS_NULLABLE: string;
-    DATA_TYPE: string;
-    CHARACTER_MAXIMUM_LENGTH: number | null;
-    CHARACTER_OCTET_LENGTH: number | null;
-    NUMERIC_PRECISION: number | null;
-    NUMERIC_PRECISION_RADIX: number | null;
-    NUMERIC_SCALE: number | null;
-    IS_IDENTITY: boolean;
-};
+export const INFORMATION_SCHEMA_TABLE_Type = t.type({
+    TABLE_CATALOG: t.string,
+    TABLE_SCHEMA: t.string,
+    TABLE_NAME: t.string,
+    TABLE_TYPE: TABLE_TYPE_Type
+})
 
-export type CONSTRAINT_TYPE = 'PRIMARY KEY' | 'FOREIGN KEY' | 'UNIQUE';
+export type INFORMATION_SCHEMA_TABLE = t.TypeOf<typeof INFORMATION_SCHEMA_TABLE_Type>
 
-export type INFORMATION_SCHEMA_CONSTRAINT = {
-    CONSTRAINT_CATALOG: string;
-    CONSTRAINT_SCHEMA: string;
-    CONSTRAINT_NAME: string;
-    CONSTRAINT_TYPE: CONSTRAINT_TYPE;
-    TABLE_CATALOG: string;
-    TABLE_SCHEMA: string;
-    TABLE_NAME: string;
-    COLUMN_NAME: string;
-    ORDINAL_POSITION: number;
-    UNIQUE_CONSTRAINT_CATALOG: string | null;
-    UNIQUE_CONSTRAINT_SCHEMA: string | null;
-    UNIQUE_CONSTRAINT_NAME: string | null;
-    FK_TABLE_CATALOG: string | null;
-    FK_TABLE_SCHEMA: string | null;
-    FK_TABLE_NAME: string | null;
-    FK_COLUMN_NAME: string | null;
-    DELETE_RULE: string | null;
-    UPDATE_RULE: string | null;
-};
+export const INFORMATION_SCHEMA_COLUMN_Type = t.type({
+    TABLE_CATALOG: t.string,
+    TABLE_SCHEMA: t.string,
+    TABLE_NAME: t.string,
+    COLUMN_NAME: t.string,
+    COLUMN_DEFAULT: t.union([t.string, t.null]),
+    ORDINAL_POSITION: t.number,
+    IS_NULLABLE: t.union([t.literal('YES'), t.literal('NO')]),
+    DATA_TYPE: t.string,
+    CHARACTER_MAXIMUM_LENGTH: t.union([t.number, t.null]),
+    CHARACTER_OCTET_LENGTH: t.union([t.number, t.null]),
+    NUMERIC_PRECISION: t.union([t.number, t.null]),
+    NUMERIC_PRECISION_RADIX: t.union([t.number, t.null]),
+    NUMERIC_SCALE: t.union([t.number, t.null]),
+    IS_IDENTITY: t.union([t.literal('YES'), t.literal('NO'), t.boolean])
+})
 
-export type INFORMATION_SCHEMA = {
-    db_name: string;
-    tables: INFORMATION_SCHEMA_TABLE[];
-    columns: INFORMATION_SCHEMA_COLUMN[];
-    constraints: INFORMATION_SCHEMA_CONSTRAINT[];
-};
+export type INFORMATION_SCHEMA_COLUMN = t.TypeOf<typeof INFORMATION_SCHEMA_COLUMN_Type>
+
+export const CONSTRAINT_TYPE_Type = t.union([t.literal('PRIMARY KEY'), t.literal('FOREIGN KEY'), t.literal('UNIQUE')])
+
+export type CONSTRAINT_TYPE = t.TypeOf<typeof CONSTRAINT_TYPE_Type>
+
+export const INFORMATION_SCHEMA_CONSTRAINT_Type = t.type({
+    CONSTRAINT_CATALOG: t.string,
+    CONSTRAINT_SCHEMA: t.string,
+    CONSTRAINT_NAME: t.string,
+    CONSTRAINT_TYPE: CONSTRAINT_TYPE_Type,
+    TABLE_CATALOG: t.string,
+    TABLE_SCHEMA: t.string,
+    TABLE_NAME: t.string,
+    COLUMN_NAME: t.string,
+    ORDINAL_POSITION: t.number,
+    UNIQUE_CONSTRAINT_CATALOG: t.union([t.string, t.null]),
+    UNIQUE_CONSTRAINT_SCHEMA: t.union([t.string, t.null]),
+    UNIQUE_CONSTRAINT_NAME: t.union([t.string, t.null]),
+    FK_TABLE_CATALOG: t.union([t.string, t.null]),
+    FK_TABLE_SCHEMA: t.union([t.string, t.null]),
+    FK_TABLE_NAME: t.union([t.string, t.null]),
+    FK_COLUMN_NAME: t.union([t.string, t.null]),
+    DELETE_RULE: t.union([t.string, t.null]),
+    UPDATE_RULE: t.union([t.string, t.null]),
+})
+
+export type INFORMATION_SCHEMA_CONSTRAINT = t.TypeOf<typeof INFORMATION_SCHEMA_CONSTRAINT_Type>
+
+export const INFORMATION_SCHEMA_Type = t.type({
+    db_name: t.string,
+    tables: t.array(INFORMATION_SCHEMA_TABLE_Type),
+    columns: t.array(INFORMATION_SCHEMA_COLUMN_Type),
+    constraints: t.array(INFORMATION_SCHEMA_CONSTRAINT_Type)
+})
+
+export type INFORMATION_SCHEMA = t.TypeOf<typeof INFORMATION_SCHEMA_Type>
 
 export interface IInformationSchemaReader {
     read: () => Promise<INFORMATION_SCHEMA | null>
