@@ -1,6 +1,6 @@
 {
     "name": "dbschema-inator",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "description": "fetch sql database schema into a friendly data model for code generation",
     "license": "MIT",
     "files": [
@@ -13,7 +13,7 @@
       "build": "tsc -b"
     },
     "dependencies": {
-      "io-ts": "^1.3.1"
+      "io-ts": "^1.7.0"
     },
     "devDependencies": {
       "jest": "^23.6.0",

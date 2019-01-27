@@ -14,7 +14,7 @@
       "build": "tsc -b"
     },
     "dependencies": {
-      "dbschema-inator": "^0.0.7"
+      "dbschema-inator": "^0.0.8"
     },
     "devDependencies": {
       "jest": "^23.6.0",

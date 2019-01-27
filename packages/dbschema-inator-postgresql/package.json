@@ -16,7 +16,7 @@
     "dependencies": {
       "@types/pg": "^7.4.11",
       "pg": "^7.8.0",
-      "dbschema-inator": "^0.0.7"
+      "dbschema-inator": "^0.0.8"
     },
     "devDependencies": {
       "jest": "^23.6.0",

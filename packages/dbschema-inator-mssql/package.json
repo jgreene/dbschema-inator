@@ -18,7 +18,7 @@
       "@types/mssql": "^4.0.10",
       "mssql": "^4.3.0",
       "msnodesqlv8": "^0.6.11",
-      "dbschema-inator": "^0.0.7"
+      "dbschema-inator": "^0.0.8"
     },
     "devDependencies": {
       "jest": "^23.6.0",
